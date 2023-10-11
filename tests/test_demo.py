@@ -1,6 +1,7 @@
 from playwright.sync_api import Page, expect
 
 from pages.login_page import LoginPage
+from pages.products_page import ProductsPage
 
 
 def test_title(page: Page) -> None:
@@ -18,6 +19,7 @@ def test_login(page: Page) -> None:
     """Test the login page."""
 
     login_page = LoginPage(base_url="https://www.saucedemo.com", page=page)
+    products_page = ProductsPage(base_url="https://www.saucedemo.com", page=page)
 
     # Go to the login page
     login_page.load()
@@ -26,4 +28,4 @@ def test_login(page: Page) -> None:
     login_page.login()
 
     # Assert that the login is successful
-    expect(page).to_have_url("https://www.saucedemo.com/inventory.html")
+    expect(products_page.page).to_have_url(products_page.url)
