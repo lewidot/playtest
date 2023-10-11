@@ -1,12 +1,11 @@
-from playwright.sync_api import Page, expect
+from playwright.sync_api import expect
 
 from pages.login_page import LoginPage
 from pages.products_page import ProductsPage
 
 
-def test_title(page: Page) -> None:
+def test_title(login_page: LoginPage) -> None:
     """Demo test case."""
-    login_page = LoginPage(base_url="https://www.saucedemo.com", page=page)
 
     # Go to the login page
     login_page.load()
@@ -15,11 +14,8 @@ def test_title(page: Page) -> None:
     expect(login_page.page).to_have_title(login_page.title)
 
 
-def test_login(page: Page) -> None:
+def test_login(login_page: LoginPage, products_page: ProductsPage) -> None:
     """Test the login page."""
-
-    login_page = LoginPage(base_url="https://www.saucedemo.com", page=page)
-    products_page = ProductsPage(base_url="https://www.saucedemo.com", page=page)
 
     # Go to the login page
     login_page.load()
