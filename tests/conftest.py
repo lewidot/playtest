@@ -8,7 +8,7 @@ from pages.products_page import ProductsPage
 
 
 @pytest.hookimpl(tryfirst=True)
-def pytest_configure(config: Config):
+def pytest_configure(config: Config) -> None:
     # create reporting directory if not already existing
     if not os.path.exists("reporting"):
         os.makedirs("reporting")
@@ -23,7 +23,8 @@ def pytest_configure(config: Config):
     execution_dir = f"{reporting_dir}/{datetime.now().strftime('%d-%m-%Y_%H%M%S')}/"
 
     # set the command line options for the html and playwright output paths
-    config.option.htmlpath = execution_dir + "/report.html"
+    if config.getoption("--html") is not None:
+        config.option.htmlpath = execution_dir + config.getoption("--html")
     config.option.output = execution_dir + "artifacts"
 
 
