@@ -1,4 +1,4 @@
-from playwright.sync_api import Page
+from playwright.sync_api import Page, Locator
 
 
 class ProductsPage:
@@ -12,6 +12,7 @@ class ProductsPage:
         self.title: str = "Swag Labs"
 
         # Locators
+        self.product_name: Locator = self.page.locator(".inventory_item_name")
 
     def load(self) -> None:
         """Load the website url."""
