@@ -3,7 +3,7 @@ import pytest
 from playwright.sync_api import expect
 from pages.login_page import LoginPage
 from pages.products_page import ProductsPage
-from utils.load_data import load_csv_data
+from utils.load_data import load_csv_data, load_json_data
 
 
 def test_title(login_page: LoginPage) -> None:
@@ -78,3 +78,26 @@ def test_product_price(
 
     # Assert that the product price is correct
     expect(product.locator(products_page.product_price)).to_contain_text(price)
+
+
+@pytest.mark.parametrize(
+    ("name", "description"), load_json_data("./data/product_descriptions.json")
+)
+def test_product_description(
+    login_page: LoginPage, products_page: ProductsPage, name: str, description: str
+) -> None:
+    """Test the description text is correct for each product on the products page."""
+
+    # Go to the login page
+    login_page.load()
+
+    # Complete the login page
+    login_page.login()
+
+    # Locate the product by the product name
+    product = products_page.product.filter(
+        has=products_page.product_name.filter(has_text=name)
+    )
+
+    # Assert that the product description is correct
+    expect(product.locator(products_page.product_description)).to_have_text(description)
