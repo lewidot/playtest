@@ -56,3 +56,34 @@ def test_product_is_visible(
             has=products_page.product_name.filter(has_text=name)
         )
     ).to_be_visible()
+
+
+@pytest.mark.parametrize(
+    ("name", "price"),
+    [
+        ("Sauce Labs Backpack", "29.99"),
+        ("Sauce Labs Bike Light", "9.99"),
+        ("Sauce Labs Bolt T-Shirt", "15.99"),
+        ("Sauce Labs Fleece Jacket", "49.99"),
+        ("Sauce Labs Onesie", "7.99"),
+        ("Test.allTheThings() T-Shirt (Red)", "15.99"),
+    ],
+)
+def test_product_price(
+    login_page: LoginPage, products_page: ProductsPage, name: str, price: str
+) -> None:
+    """Test the price is correct for each product on the products page."""
+
+    # Go to the login page
+    login_page.load()
+
+    # Complete the login page
+    login_page.login()
+
+    # Locate the product by the product name
+    product = products_page.product.filter(
+        has=products_page.product_name.filter(has_text=name)
+    )
+
+    # Assert that the product price is correct
+    expect(product.locator(products_page.product_price)).to_contain_text(price)
