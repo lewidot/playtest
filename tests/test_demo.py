@@ -52,7 +52,7 @@ def test_product_is_visible(
 
     # Assert that the product is visible
     expect(
-        products_page.product.filter(has=products_page.product_name).filter(
-            has_text=name
+        products_page.product.filter(
+            has=products_page.product_name.filter(has_text=name)
         )
     ).to_be_visible()
