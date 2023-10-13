@@ -1,5 +1,6 @@
 certifi==2023.7.22
 charset-normalizer==3.3.0
+execnet==2.0.2
 greenlet==2.0.2
 idna==3.4
 iniconfig==2.0.0
@@ -14,6 +15,7 @@ pytest-base-url==2.0.0
 pytest-html==4.0.2
 pytest-metadata==3.0.0
 pytest-playwright==0.4.3
+pytest-xdist==3.3.1
 python-slugify==8.0.1
 requests==2.31.0
 text-unidecode==1.3
