@@ -3,6 +3,7 @@ import pytest
 from playwright.sync_api import expect
 from pages.login_page import LoginPage
 from pages.products_page import ProductsPage
+from utils.load_data import load_csv_data
 
 
 def test_title(login_page: LoginPage) -> None:
@@ -58,17 +59,7 @@ def test_product_is_visible(
     ).to_be_visible()
 
 
-@pytest.mark.parametrize(
-    ("name", "price"),
-    [
-        ("Sauce Labs Backpack", "29.99"),
-        ("Sauce Labs Bike Light", "9.99"),
-        ("Sauce Labs Bolt T-Shirt", "15.99"),
-        ("Sauce Labs Fleece Jacket", "49.99"),
-        ("Sauce Labs Onesie", "7.99"),
-        ("Test.allTheThings() T-Shirt (Red)", "15.99"),
-    ],
-)
+@pytest.mark.parametrize(("name", "price"), load_csv_data("./data/product_prices.csv"))
 def test_product_price(
     login_page: LoginPage, products_page: ProductsPage, name: str, price: str
 ) -> None:
