@@ -14,7 +14,7 @@ class ProductsPage:
         # Locators
         self.product_name: Locator = self.page.locator(".inventory_item_name")
         self.product: Locator = self.page.locator(".inventory_item")
-        self.product_price: Locator = self.page.locator("inventory_item_price")
+        self.product_price: Locator = self.page.locator(".inventory_item_price")
 
     def load(self) -> None:
         """Load the website url."""
