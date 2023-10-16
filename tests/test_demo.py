@@ -52,11 +52,7 @@ def test_product_is_visible(
     login_page.login()
 
     # Assert that the product is visible
-    expect(
-        products_page.product.filter(
-            has=products_page.product_name.filter(has_text=name)
-        )
-    ).to_be_visible()
+    expect(products_page.product_by_name(name=name)).to_be_visible()
 
 
 @pytest.mark.parametrize(("name", "price"), load_csv_data("./data/product_prices.csv"))
@@ -72,9 +68,7 @@ def test_product_price(
     login_page.login()
 
     # Locate the product by the product name
-    product = products_page.product.filter(
-        has=products_page.product_name.filter(has_text=name)
-    )
+    product = products_page.product_by_name(name=name)
 
     # Assert that the product price is correct
     expect(product.locator(products_page.product_price)).to_contain_text(price)
@@ -95,9 +89,7 @@ def test_product_description(
     login_page.login()
 
     # Locate the product by the product name
-    product = products_page.product.filter(
-        has=products_page.product_name.filter(has_text=name)
-    )
+    product = products_page.product_by_name(name=name)
 
     # Assert that the product description is correct
     expect(product.locator(products_page.product_description)).to_have_text(description)
@@ -116,9 +108,7 @@ def test_product_img_src(
     login_page.login()
 
     # Locate the product by the product name
-    product = products_page.product.filter(
-        has=products_page.product_name.filter(has_text=name)
-    )
+    product = products_page.product_by_name(name=name)
 
     # Assert that the product description is correct
     expect(product.locator(products_page.page.locator("img"))).to_have_attribute(
