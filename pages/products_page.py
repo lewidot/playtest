@@ -20,3 +20,7 @@ class ProductsPage:
     def load(self) -> None:
         """Load the website url."""
         self.page.goto(url=self.url)
+
+    def product_by_name(self, name: str) -> Locator:
+        """Filter a product Locator by the product_name Locator."""
+        return self.product.filter(has=self.product_name.filter(has_text=name))
