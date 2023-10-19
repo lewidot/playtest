@@ -28,19 +28,19 @@ def pytest_configure(config: Config) -> None:
     config.option.output = execution_dir + "artifacts"
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture(scope="session", autouse=True)
 def base_url() -> str:
     """Fixture to share the base url string."""
     return "https://www.saucedemo.com"
 
 
 @pytest.fixture
-def login_page(page: Page, base_url: str) -> LoginPage:
+def login_page(page: Page) -> LoginPage:
     """Initialise a LoginPage instance"""
-    return LoginPage(base_url=base_url, page=page)
+    return LoginPage(page=page)
 
 
 @pytest.fixture
-def products_page(page: Page, base_url: str) -> ProductsPage:
+def products_page(page: Page) -> ProductsPage:
     """Initialise a ProductsPage instance"""
-    return ProductsPage(base_url=base_url, page=page)
+    return ProductsPage(page=page)

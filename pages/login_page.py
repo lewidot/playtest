@@ -4,11 +4,11 @@ from playwright.sync_api import Page, Locator
 class LoginPage:
     """Page Object Model for the Login page."""
 
-    def __init__(self, base_url: str, page: Page) -> None:
+    def __init__(self, page: Page) -> None:
         """Construct a LoginPage."""
         # Attributes
         self.page: Page = page
-        self.url: str = base_url
+        self.url: str = "/"
         self.title: str = "Swag Labs"
 
         # Locators
