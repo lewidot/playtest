@@ -3,9 +3,10 @@
 from csv import reader
 import json
 from openpyxl import load_workbook
+from pathlib import Path
 
 
-def load_csv_data(path: str) -> list[tuple]:
+def load_csv_data(path: Path) -> list[tuple]:
     """Load csv data for test parametrization."""
     with open(path, "r") as f:
         # create csv reader object
