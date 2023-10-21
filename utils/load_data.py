@@ -29,7 +29,7 @@ def load_json_data(path: Path) -> list[tuple]:
         return [tuple(d.values()) for d in data]
 
 
-def load_excel_data(path: str) -> list[tuple]:
+def load_excel_data(path: Path) -> list[tuple]:
     """Load excel data for test parametrization.
 
     - Workbook must have single active sheet
