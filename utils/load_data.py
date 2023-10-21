@@ -19,7 +19,7 @@ def load_csv_data(path: Path) -> list[tuple]:
         return list(map(tuple, csv_reader))
 
 
-def load_json_data(path: str) -> list[tuple]:
+def load_json_data(path: Path) -> list[tuple]:
     """Load json data for test parametrization"""
     with open(path, "r") as f:
         # load the json data

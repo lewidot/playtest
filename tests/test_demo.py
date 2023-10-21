@@ -1,3 +1,4 @@
+from pathlib import Path
 import pytest
 
 from playwright.sync_api import expect
@@ -55,7 +56,9 @@ def test_product_is_visible(
     expect(products_page.product_by_name(name=name)).to_be_visible()
 
 
-@pytest.mark.parametrize(("name", "price"), load_csv_data("./data/product_prices.csv"))
+@pytest.mark.parametrize(
+    ("name", "price"), load_csv_data(Path("./data/product_prices.csv"))
+)
 def test_product_price(
     login_page: LoginPage, products_page: ProductsPage, name: str, price: str
 ) -> None:
