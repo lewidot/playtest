@@ -4,7 +4,7 @@ import pytest
 from playwright.sync_api import expect
 from pages.login_page import LoginPage
 from pages.products_page import ProductsPage
-from utils.load_data import load_csv_data, load_json_data, load_excel_data
+from utils.load_data import load_data
 
 
 def test_title(login_page: LoginPage) -> None:
@@ -57,7 +57,7 @@ def test_product_is_visible(
 
 
 @pytest.mark.parametrize(
-    ("name", "price"), load_csv_data(Path("./data/product_prices.csv"))
+    ("name", "price"), load_data(Path("./data/product_prices.csv"))
 )
 def test_product_price(
     login_page: LoginPage, products_page: ProductsPage, name: str, price: str
@@ -78,7 +78,7 @@ def test_product_price(
 
 
 @pytest.mark.parametrize(
-    ("name", "description"), load_json_data(Path("./data/product_descriptions.json"))
+    ("name", "description"), load_data(Path("./data/product_descriptions.json"))
 )
 def test_product_description(
     login_page: LoginPage, products_page: ProductsPage, name: str, description: str
@@ -98,9 +98,7 @@ def test_product_description(
     expect(product.locator(products_page.product_description)).to_have_text(description)
 
 
-@pytest.mark.parametrize(
-    ("name", "src"), load_excel_data(Path("./data/product_images.xlsx"))
-)
+@pytest.mark.parametrize(("name", "src"), load_data(Path("./data/product_images.xlsx")))
 def test_product_img_src(
     login_page: LoginPage, products_page: ProductsPage, name: str, src: str
 ) -> None:
