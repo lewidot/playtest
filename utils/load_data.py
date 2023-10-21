@@ -6,7 +6,7 @@ from openpyxl import load_workbook
 from pathlib import Path
 
 
-def load_csv_data(path: Path) -> list[tuple]:
+def _load_csv_data(path: Path) -> list[tuple]:
     """Load csv data for test parametrization."""
     with open(path, "r") as f:
         # create csv reader object
@@ -19,7 +19,7 @@ def load_csv_data(path: Path) -> list[tuple]:
         return list(map(tuple, csv_reader))
 
 
-def load_json_data(path: Path) -> list[tuple]:
+def _load_json_data(path: Path) -> list[tuple]:
     """Load json data for test parametrization"""
     with open(path, "r") as f:
         # load the json data
@@ -29,7 +29,7 @@ def load_json_data(path: Path) -> list[tuple]:
         return [tuple(d.values()) for d in data]
 
 
-def load_excel_data(path: Path) -> list[tuple]:
+def _load_excel_data(path: Path) -> list[tuple]:
     """Load excel data for test parametrization.
 
     - Workbook must have single active sheet
@@ -63,3 +63,23 @@ def load_excel_data(path: Path) -> list[tuple]:
 
     # return a list of tuples with data from each row
     return [row for row in rows if row[0] is not None]
+
+
+def load_data(path: Path) -> list[tuple]:
+    """Load data for test parametrization.
+
+    Supports csv, json and excel file types
+
+    """
+
+    if not path.exists():
+        raise FileNotFoundError(f"path: {path} not found")
+
+    if path.suffix == ".csv":
+        return _load_csv_data(path)
+    elif path.suffix == ".json":
+        return _load_json_data(path)
+    elif path.suffix == ".xlsx":
+        return _load_excel_data(path)
+    else:
+        raise ValueError("file must be csv, json or excel")
