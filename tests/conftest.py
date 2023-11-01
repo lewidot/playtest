@@ -1,14 +1,16 @@
-from datetime import datetime
 import os
+from datetime import datetime
+
 import pytest
-from pytest import Config
 from playwright.sync_api import Page
+
 from pages.login_page import LoginPage
 from pages.products_page import ProductsPage
 
 
 @pytest.hookimpl(tryfirst=True)
-def pytest_configure(config: Config) -> None:
+def pytest_configure(config: pytest.Config) -> None:
+    """Handle reporting directory creation."""
     # create reporting directory if not already existing
     if not os.path.exists("reporting"):
         os.makedirs("reporting")
@@ -34,13 +36,13 @@ def base_url() -> str:
     return "https://www.saucedemo.com"
 
 
-@pytest.fixture
+@pytest.fixture()
 def login_page(page: Page) -> LoginPage:
-    """Initialise a LoginPage instance"""
+    """Initialise a LoginPage instance."""
     return LoginPage(page=page)
 
 
-@pytest.fixture
+@pytest.fixture()
 def products_page(page: Page) -> ProductsPage:
-    """Initialise a ProductsPage instance"""
+    """Initialise a ProductsPage instance."""
     return ProductsPage(page=page)
