@@ -1,7 +1,8 @@
 from pathlib import Path
-import pytest
 
+import pytest
 from playwright.sync_api import expect
+
 from pages.login_page import LoginPage
 from pages.products_page import ProductsPage
 from utils.load_data import load_data
@@ -9,7 +10,6 @@ from utils.load_data import load_data
 
 def test_title(login_page: LoginPage) -> None:
     """Demo test case."""
-
     # Go to the login page
     login_page.load()
 
@@ -19,7 +19,6 @@ def test_title(login_page: LoginPage) -> None:
 
 def test_login(login_page: LoginPage, products_page: ProductsPage) -> None:
     """Test the login page."""
-
     # Go to the login page
     login_page.load()
 
@@ -32,20 +31,21 @@ def test_login(login_page: LoginPage, products_page: ProductsPage) -> None:
 
 @pytest.mark.parametrize(
     "name",
-    (
-        "Sauce Labs Backpack",
-        "Sauce Labs Bike Light",
-        "Sauce Labs Bolt T-Shirt",
-        "Sauce Labs Fleece Jacket",
-        "Sauce Labs Onesie",
-        "Test.allTheThings() T-Shirt (Red)",
-    ),
+    [
+        ("Sauce Labs Backpack"),
+        ("Sauce Labs Bike Light"),
+        ("Sauce Labs Bolt T-Shirt"),
+        ("Sauce Labs Fleece Jacket"),
+        ("Sauce Labs Onesie"),
+        ("Test.allTheThings() T-Shirt (Red)"),
+    ],
 )
 def test_product_is_visible(
-    login_page: LoginPage, products_page: ProductsPage, name: str
+    login_page: LoginPage,
+    products_page: ProductsPage,
+    name: str,
 ) -> None:
     """Test the expected product is visible on the products page."""
-
     # Go to the login page
     login_page.load()
 
@@ -57,13 +57,16 @@ def test_product_is_visible(
 
 
 @pytest.mark.parametrize(
-    ("name", "price"), load_data(Path("./data/product_prices.csv"))
+    ("name", "price"),
+    load_data(Path("./data/product_prices.csv")),
 )
 def test_product_price(
-    login_page: LoginPage, products_page: ProductsPage, name: str, price: str
+    login_page: LoginPage,
+    products_page: ProductsPage,
+    name: str,
+    price: str,
 ) -> None:
     """Test the price is correct for each product on the products page."""
-
     # Go to the login page
     login_page.load()
 
@@ -78,13 +81,16 @@ def test_product_price(
 
 
 @pytest.mark.parametrize(
-    ("name", "description"), load_data(Path("./data/product_descriptions.json"))
+    ("name", "description"),
+    load_data(Path("./data/product_descriptions.json")),
 )
 def test_product_description(
-    login_page: LoginPage, products_page: ProductsPage, name: str, description: str
+    login_page: LoginPage,
+    products_page: ProductsPage,
+    name: str,
+    description: str,
 ) -> None:
     """Test the description text is correct for each product on the products page."""
-
     # Go to the login page
     login_page.load()
 
@@ -100,10 +106,12 @@ def test_product_description(
 
 @pytest.mark.parametrize(("name", "src"), load_data(Path("./data/product_images.xlsx")))
 def test_product_img_src(
-    login_page: LoginPage, products_page: ProductsPage, name: str, src: str
+    login_page: LoginPage,
+    products_page: ProductsPage,
+    name: str,
+    src: str,
 ) -> None:
     """Test the product image src is correct for each product on the products page."""
-
     # Go to the login page
     login_page.load()
 
@@ -115,5 +123,6 @@ def test_product_img_src(
 
     # Assert that the product description is correct
     expect(product.locator(products_page.product_image)).to_have_attribute(
-        name="src", value=src
+        name="src",
+        value=src,
     )
