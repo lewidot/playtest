@@ -1,2 +1,42 @@
 [tool.pytest.ini_options]
-addopts = "-v --screenshot=only-on-failure --html=report.html --self-contained-html"
+addopts = "--tracing=retain-on-failure --self-contained-html"
+
+[tool.ruff.lint]
+select = [
+    "ANN",
+    "I",
+    "F",
+    "E",
+    "W",
+    "N",
+    "D",
+    "UP",
+    "S",
+    "BLE",
+    "FBT",
+    "B",
+    "A",
+    "COM",
+    "C4",
+    "DTZ",
+    "EM",
+    "ISC",
+    "ICN",
+    "G",
+    "PIE",
+    "PT",
+    "Q",
+    "RSE",
+    "SIM",
+    "TID",
+    "ARG",
+    "ERA",
+    "PL",
+    "TRY",
+    "RUF",
+]
+
+ignore = ["D203", "D213"]
+
+[tool.ruff.pydocstyle]
+convention = "google"
