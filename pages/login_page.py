@@ -1,10 +1,12 @@
-from playwright.sync_api import Page, Locator
+"""Login Page class for the Page Object Model."""
+
+from playwright.sync_api import Locator, Page
 
 
 class LoginPage:
     """Page Object Model for the Login page."""
 
-    def __init__(self, page: Page) -> None:
+    def __init__(self: "LoginPage", page: Page) -> None:
         """Construct a LoginPage."""
         # Attributes
         self.page: Page = page
@@ -16,11 +18,11 @@ class LoginPage:
         self.password_input: Locator = self.page.get_by_placeholder("Password")
         self.login_btn: Locator = self.page.get_by_role("button", name="Login")
 
-    def load(self) -> None:
+    def load(self: "LoginPage") -> None:
         """Load the website url."""
         self.page.goto(url=self.url)
 
-    def login(self) -> None:
+    def login(self: "LoginPage") -> None:
         """Complete the login form."""
         self.username_input.fill("standard_user")
         self.password_input.fill("secret_sauce")

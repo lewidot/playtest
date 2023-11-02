@@ -1,5 +1,7 @@
-import os
-from datetime import datetime
+"""Conftest file for pytest hooks and fixtures."""
+
+import datetime
+from pathlib import Path
 
 import pytest
 from playwright.sync_api import Page
@@ -12,22 +14,27 @@ from pages.products_page import ProductsPage
 def pytest_configure(config: pytest.Config) -> None:
     """Handle reporting directory creation."""
     # create reporting directory if not already existing
-    if not os.path.exists("reporting"):
-        os.makedirs("reporting")
+    reporting_path = Path("reporting")
+    if not reporting_path.exists():
+        reporting_path.mkdir(parents=True)
 
     # create a directory with the current date
-    reporting_dir = f"reporting/{datetime.now().strftime('%d-%m-%Y')}"
+    reporting_dir = Path(
+        f"reporting/{datetime.datetime.now(tz=datetime.UTC).strftime('%d-%m-%Y')}",
+    )
 
-    if not os.path.exists(reporting_dir):
-        os.makedirs(reporting_dir)
+    if not reporting_dir.exists():
+        reporting_dir.mkdir(parents=True)
 
     # create a subdirectory for each execution per day
-    execution_dir = f"{reporting_dir}/{datetime.now().strftime('%d-%m-%Y_%H%M%S')}/"
+    execution_dir = Path(
+        f"{reporting_dir}/{datetime.datetime.now(tz=datetime.UTC).strftime('%d-%m-%Y_%H%M%S')}/",
+    )
 
     # set the command line options for the html and playwright output paths
     if config.getoption("--html") is not None:
         config.option.htmlpath = execution_dir + config.getoption("--html")
-    config.option.output = execution_dir + "artifacts"
+    config.option.output = execution_dir / "artifacts"
 
 
 @pytest.fixture(scope="session", autouse=True)

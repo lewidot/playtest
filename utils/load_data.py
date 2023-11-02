@@ -1,14 +1,14 @@
-"""File containing functions for loading test data"""
-
-from csv import reader
+"""File containing functions for loading test data."""
 import json
-from openpyxl import load_workbook
+from csv import reader
 from pathlib import Path
+
+from openpyxl import load_workbook
 
 
 def _load_csv_data(path: Path) -> list[tuple]:
     """Load csv data for test parametrization."""
-    with open(path, "r") as f:
+    with open(path) as f:
         # create csv reader object
         csv_reader = reader(f)
 
@@ -20,8 +20,8 @@ def _load_csv_data(path: Path) -> list[tuple]:
 
 
 def _load_json_data(path: Path) -> list[tuple]:
-    """Load json data for test parametrization"""
-    with open(path, "r") as f:
+    """Load json data for test parametrization."""
+    with Path.open(path, "r") as f:
         # load the json data
         data = json.load(f)
 
@@ -38,7 +38,6 @@ def _load_excel_data(path: Path) -> list[tuple]:
 
     - Header row columns must not be empty
     """
-
     # load workbook
     wb = load_workbook(path, read_only=True)
 
@@ -58,7 +57,10 @@ def _load_excel_data(path: Path) -> list[tuple]:
 
     # create an iterator of rows, skipping header row (1 indexed)
     rows = sheet.iter_rows(
-        min_row=2, max_row=sheet.max_row, max_col=max_col_index, values_only=True
+        min_row=2,
+        max_row=sheet.max_row,
+        max_col=max_col_index,
+        values_only=True,
     )
 
     # return a list of tuples with data from each row
@@ -71,15 +73,15 @@ def load_data(path: Path) -> list[tuple]:
     Supports csv, json and excel file types
 
     """
-
     if not path.exists():
-        raise FileNotFoundError(f"path: {path} not found")
+        raise FileNotFoundError
 
     if path.suffix == ".csv":
         return _load_csv_data(path)
+
     elif path.suffix == ".json":
         return _load_json_data(path)
     elif path.suffix == ".xlsx":
         return _load_excel_data(path)
     else:
-        raise ValueError("file must be csv, json or excel")
+        raise ValueError

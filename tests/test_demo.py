@@ -1,3 +1,5 @@
+"""Collection of test cases demonstrating various techniques."""
+
 from pathlib import Path
 
 import pytest
