@@ -74,14 +74,18 @@ def load_data(path: Path) -> list[tuple]:
 
     """
     if not path.exists():
-        raise FileNotFoundError
+        err = f"{path} does not exist"
+        raise FileNotFoundError(err)
 
     if path.suffix == ".csv":
         return _load_csv_data(path)
 
     elif path.suffix == ".json":
         return _load_json_data(path)
+
     elif path.suffix == ".xlsx":
         return _load_excel_data(path)
+
     else:
-        raise ValueError
+        err = f"file: {path} must be a csv, json or xlsx file"
+        raise ValueError(err)
