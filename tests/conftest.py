@@ -4,6 +4,7 @@ import datetime
 from pathlib import Path
 
 import pytest
+from dotenv import dotenv_values
 from playwright.sync_api import Page
 
 from pages.login_page import LoginPage
@@ -33,8 +34,14 @@ def pytest_configure(config: pytest.Config) -> None:
 
     # set the command line options for the html and playwright output paths
     if config.getoption("--html") is not None:
-        config.option.htmlpath = execution_dir + config.getoption("--html")
+        config.option.htmlpath = execution_dir / config.getoption("--html")
     config.option.output = execution_dir / "artifacts"
+
+
+@pytest.fixture(scope="session")
+def env_config() -> dict[str, str | None]:
+    """Load environment variables into a dictionary."""
+    return dotenv_values(".env")
 
 
 @pytest.fixture(scope="session", autouse=True)
@@ -44,9 +51,9 @@ def base_url() -> str:
 
 
 @pytest.fixture()
-def login_page(page: Page) -> LoginPage:
+def login_page(page: Page, env_config: dict[str, str | None]) -> LoginPage:
     """Initialise a LoginPage instance."""
-    return LoginPage(page=page)
+    return LoginPage(page=page, env_config=env_config)
 
 
 @pytest.fixture()

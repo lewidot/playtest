@@ -6,12 +6,14 @@ from playwright.sync_api import Locator, Page
 class LoginPage:
     """Page Object Model for the Login page."""
 
-    def __init__(self: "LoginPage", page: Page) -> None:
+    def __init__(self: "LoginPage", page: Page, env_config: dict) -> None:
         """Construct a LoginPage."""
         # Attributes
         self.page: Page = page
         self.url: str = "/"
         self.title: str = "Swag Labs"
+        self.username = env_config["USERNAME"]
+        self.password = env_config["PASSWORD"]
 
         # Locators
         self.username_input: Locator = self.page.get_by_placeholder("Username")
@@ -24,6 +26,6 @@ class LoginPage:
 
     def login(self: "LoginPage") -> None:
         """Complete the login form."""
-        self.username_input.fill("standard_user")
-        self.password_input.fill("secret_sauce")
+        self.username_input.fill(self.username)
+        self.password_input.fill(self.password)
         self.login_btn.click()
