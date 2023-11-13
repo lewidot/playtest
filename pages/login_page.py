@@ -1,19 +1,21 @@
 """Login Page class for the Page Object Model."""
 
+import os
+
 from playwright.sync_api import Locator, Page
 
 
 class LoginPage:
     """Page Object Model for the Login page."""
 
-    def __init__(self: "LoginPage", page: Page, env_config: dict) -> None:
+    def __init__(self: "LoginPage", page: Page) -> None:
         """Construct a LoginPage."""
         # Attributes
         self.page: Page = page
         self.url: str = "/"
         self.title: str = "Swag Labs"
-        self.username = env_config["USERNAME"]
-        self.password = env_config["PASSWORD"]
+        self.username: str = str(os.getenv("USERNAME"))
+        self.password: str = str(os.getenv("PASSWORD"))
 
         # Locators
         self.username_input: Locator = self.page.get_by_placeholder("Username")

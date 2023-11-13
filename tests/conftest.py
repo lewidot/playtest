@@ -4,16 +4,22 @@ import datetime
 from pathlib import Path
 
 import pytest
-from dotenv import dotenv_values
+from dotenv import load_dotenv
 from playwright.sync_api import Page
 
 from pages.login_page import LoginPage
 from pages.products_page import ProductsPage
+from utils.validate import validate_env_var
 
 
 @pytest.hookimpl(tryfirst=True)
 def pytest_configure(config: pytest.Config) -> None:
-    """Handle reporting directory creation."""
+    """Handle initial configuration setup."""
+    # load environment variables
+    load_dotenv()
+    validate_env_var("USERNAME")
+    validate_env_var("PASSWORD")
+
     # create reporting directory if not already existing
     reporting_path = Path("reporting")
     if not reporting_path.exists():
@@ -38,12 +44,6 @@ def pytest_configure(config: pytest.Config) -> None:
     config.option.output = execution_dir / "artifacts"
 
 
-@pytest.fixture(scope="session")
-def env_config() -> dict[str, str | None]:
-    """Load environment variables into a dictionary."""
-    return dotenv_values(".env")
-
-
 @pytest.fixture(scope="session", autouse=True)
 def base_url() -> str:
     """Fixture to share the base url string."""
@@ -51,9 +51,9 @@ def base_url() -> str:
 
 
 @pytest.fixture()
-def login_page(page: Page, env_config: dict[str, str | None]) -> LoginPage:
+def login_page(page: Page) -> LoginPage:
     """Initialise a LoginPage instance."""
-    return LoginPage(page=page, env_config=env_config)
+    return LoginPage(page=page)
 
 
 @pytest.fixture()
