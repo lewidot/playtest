@@ -1,6 +1,5 @@
 """Conftest file for pytest hooks and fixtures."""
 
-import datetime
 from pathlib import Path
 
 import pytest
@@ -21,27 +20,16 @@ def pytest_configure(config: pytest.Config) -> None:
     validate_env_var("PASSWORD")
 
     # create reporting directory if not already existing
-    reporting_path = Path("reporting")
-    if not reporting_path.exists():
-        reporting_path.mkdir(parents=True)
+    report_path = Path("reports")
+    if not report_path.exists():
+        report_path.mkdir(parents=True)
 
-    # create a directory with the current date
-    reporting_dir = Path(
-        f"reporting/{datetime.datetime.now(tz=datetime.UTC).strftime('%d-%m-%Y')}",
-    )
-
-    if not reporting_dir.exists():
-        reporting_dir.mkdir(parents=True)
-
-    # create a subdirectory for each execution per day
-    execution_dir = Path(
-        f"{reporting_dir}/{datetime.datetime.now(tz=datetime.UTC).strftime('%d-%m-%Y_%H%M%S')}/",
-    )
-
-    # set the command line options for the html and playwright output paths
+    # set the command line options for the html report path
     if config.getoption("--html") is not None:
-        config.option.htmlpath = execution_dir / config.getoption("--html")
-    config.option.output = execution_dir / "artifacts"
+        config.option.htmlpath = report_path / config.getoption("--html")
+
+    # set the command line options for the pytest-playwright output
+    config.option.output = report_path / "artifacts"
 
 
 @pytest.fixture(scope="session", autouse=True)
