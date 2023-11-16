@@ -14,8 +14,8 @@ class LoginPage:
         self.page: Page = page
         self.url: str = "/"
         self.title: str = "Swag Labs"
-        self.username: str = str(os.getenv("USERNAME"))
-        self.password: str = str(os.getenv("PASSWORD"))
+        self.username: str = os.environ["USERNAME"]
+        self.password: str = os.environ["PASSWORD"]
 
         # Locators
         self.username_input: Locator = self.page.get_by_placeholder("Username")

@@ -8,7 +8,6 @@ from playwright.sync_api import Page
 
 from pages.login_page import LoginPage
 from pages.products_page import ProductsPage
-from utils.validate import validate_env_var
 
 
 @pytest.hookimpl(tryfirst=True)
@@ -16,8 +15,6 @@ def pytest_configure(config: pytest.Config) -> None:
     """Handle initial configuration setup."""
     # load environment variables
     load_dotenv()
-    validate_env_var("USERNAME")
-    validate_env_var("PASSWORD")
 
     # create reporting directory if not already existing
     report_path = Path("reports")
@@ -26,7 +23,8 @@ def pytest_configure(config: pytest.Config) -> None:
 
     # set the command line options for the html report path
     if config.getoption("--html") is not None:
-        config.option.htmlpath = report_path / config.getoption("--html")
+        report_name = str(config.getoption("--html"))
+        config.option.htmlpath = report_path / report_name
 
     # set the command line options for the pytest-playwright output
     config.option.output = report_path / "artifacts"
