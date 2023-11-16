@@ -126,3 +126,24 @@ def test_product_img_src(
         name="src",
         value=src,
     )
+
+
+def test_add_to_cart(login_page: LoginPage, products_page: ProductsPage) -> None:
+    """Test that add to cart button successfully adds the item to the cart."""
+    # Go to the login page
+    login_page.load()
+
+    # Complete the login page
+    login_page.login()
+
+    # Add a product to the cart
+    products_page.add_product_to_cart(name="Sauce Labs Backpack")
+
+    # Go to the shopping cart
+    products_page.click_shopping_cart()
+
+    # Assert that the item is present in the cart
+    cart_item = products_page.page.locator(".cart_item")
+    expect(
+        cart_item.locator(products_page.page.locator(".inventory_item_name")),
+    ).to_have_text("Sauce Labs Backpack")
