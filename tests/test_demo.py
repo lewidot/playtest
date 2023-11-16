@@ -2,6 +2,7 @@
 
 import pytest
 from playwright.sync_api import expect
+from pages.cart_page import CartPage
 
 from pages.login_page import LoginPage
 from pages.products_page import ProductsPage
@@ -128,7 +129,9 @@ def test_product_img_src(
     )
 
 
-def test_add_to_cart(login_page: LoginPage, products_page: ProductsPage) -> None:
+def test_add_to_cart(
+    login_page: LoginPage, products_page: ProductsPage, cart_page: CartPage
+) -> None:
     """Test that add to cart button successfully adds the item to the cart."""
     # Go to the login page
     login_page.load()
@@ -143,7 +146,4 @@ def test_add_to_cart(login_page: LoginPage, products_page: ProductsPage) -> None
     products_page.click_shopping_cart()
 
     # Assert that the item is present in the cart
-    cart_item = products_page.page.locator(".cart_item")
-    expect(
-        cart_item.locator(products_page.page.locator(".inventory_item_name")),
-    ).to_have_text("Sauce Labs Backpack")
+    expect(cart_page.cart_item_by_name("Sauce Labs Backpack")).to_be_visible()
