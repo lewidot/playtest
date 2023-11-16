@@ -67,12 +67,14 @@ def _load_excel_data(path: Path) -> list[tuple]:
     return [row for row in rows if row[0] is not None]
 
 
-def load_data(path: Path) -> list[tuple]:
+def load_data(filepath: str) -> list[tuple]:
     """Load data for test parametrization.
 
     Supports csv, json and excel file types
 
     """
+    path = Path(filepath)
+
     if not path.exists():
         err = f"{path} does not exist"
         raise FileNotFoundError(err)

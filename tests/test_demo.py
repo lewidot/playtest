@@ -60,7 +60,7 @@ def test_product_is_visible(
 
 @pytest.mark.parametrize(
     ("name", "price"),
-    load_data(Path("./data/product_prices.csv")),
+    load_data("./data/product_prices.csv"),
 )
 def test_product_price(
     login_page: LoginPage,
@@ -84,7 +84,7 @@ def test_product_price(
 
 @pytest.mark.parametrize(
     ("name", "description"),
-    load_data(Path("./data/product_descriptions.json")),
+    load_data("./data/product_descriptions.json"),
 )
 def test_product_description(
     login_page: LoginPage,
@@ -106,7 +106,7 @@ def test_product_description(
     expect(product.locator(products_page.product_description)).to_have_text(description)
 
 
-@pytest.mark.parametrize(("name", "src"), load_data(Path("./data/product_images.xlsx")))
+@pytest.mark.parametrize(("name", "src"), load_data("./data/product_images.xlsx"))
 def test_product_img_src(
     login_page: LoginPage,
     products_page: ProductsPage,
