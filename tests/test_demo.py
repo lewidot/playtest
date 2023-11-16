@@ -1,7 +1,5 @@
 """Collection of test cases demonstrating various techniques."""
 
-from pathlib import Path
-
 import pytest
 from playwright.sync_api import expect
 
