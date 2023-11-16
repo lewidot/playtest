@@ -6,6 +6,7 @@ import pytest
 from dotenv import load_dotenv
 from playwright.sync_api import Page
 
+from pages.cart_page import CartPage
 from pages.login_page import LoginPage
 from pages.products_page import ProductsPage
 
@@ -46,3 +47,9 @@ def login_page(page: Page) -> LoginPage:
 def products_page(page: Page) -> ProductsPage:
     """Initialise a ProductsPage instance."""
     return ProductsPage(page=page)
+
+
+@pytest.fixture()
+def cart_page(page: Page) -> CartPage:
+    """Initialise a CartPage instance."""
+    return CartPage(page=page)
