@@ -1,11 +1,13 @@
 """Conftest file for pytest hooks and fixtures."""
 
 from pathlib import Path
+from typing import Any, Generator
 
 import pytest
 from dotenv import load_dotenv
 from playwright.sync_api import Page
 
+from pages.base_page import BasePage
 from pages.cart_page import CartPage
 from pages.login_page import LoginPage
 from pages.products_page import ProductsPage
@@ -35,6 +37,24 @@ def pytest_configure(config: pytest.Config) -> None:
 def base_url() -> str:
     """Fixture to share the base url string."""
     return "https://www.saucedemo.com"
+
+
+@pytest.fixture()
+def _reset_app_state(
+    login_page: LoginPage,
+    base_page: BasePage,
+) -> Generator[None, Any, None]:
+    """Reset the app state after each test."""
+    yield
+    login_page.load()
+    login_page.login()
+    base_page.reset_app_state()
+
+
+@pytest.fixture()
+def base_page(page: Page) -> BasePage:
+    """Initialise a BasePage instance."""
+    return BasePage(page=page)
 
 
 @pytest.fixture()
