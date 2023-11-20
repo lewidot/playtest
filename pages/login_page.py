@@ -31,3 +31,8 @@ class LoginPage:
         self.username_input.fill(self.username)
         self.password_input.fill(self.password)
         self.login_btn.click()
+
+    def navigate_and_login(self: "LoginPage") -> None:
+        """Load the website and complete the login form."""
+        self.load()
+        self.login()
