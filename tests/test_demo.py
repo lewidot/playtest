@@ -4,6 +4,7 @@ import pytest
 from playwright.sync_api import expect
 
 from pages.cart_page import CartPage
+from pages.checkout_page import CheckoutPage
 from pages.login_page import LoginPage
 from pages.products_page import ProductsPage
 from utils.load_data import load_data
@@ -150,3 +151,37 @@ def test_add_to_cart(
 
     # Assert that the item is present in the cart
     expect(cart_page.cart_item_by_name("Sauce Labs Backpack")).to_be_visible()
+
+
+@pytest.mark.usefixtures("_reset_app_state")
+def test_checkout_first_name_mandatory(
+    login_page: LoginPage,
+    products_page: ProductsPage,
+    cart_page: CartPage,
+    checkout_page: CheckoutPage,
+) -> None:
+    """Test that adds an item to cart and verifies that first name is mandatory at checkout."""
+    # Go to the login page
+    login_page.load()
+
+    # Complete the login page
+    login_page.login()
+
+    # Add a product to the cart
+    products_page.add_product_to_cart(name="Sauce Labs Backpack")
+
+    # Go to the shopping cart
+    products_page.click_shopping_cart()
+
+    # Click the checkout button
+    cart_page.click_checkout_button()
+
+    # Input last name and postcode
+    checkout_page.input_last_name("user")
+    checkout_page.input_postal_code("SW1A 1AA")
+
+    # Click the Continue button
+    checkout_page.click_continue_button()
+
+    # Assert that an error is displayed as the First Name is a mandatory field
+    expect(checkout_page.first_name_error).to_be_visible()
