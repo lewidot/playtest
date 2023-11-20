@@ -22,6 +22,9 @@ class CheckoutPage:
         self.first_name_error: Locator = self.page.get_by_text(
             "Error: First Name is required",
         )
+        self.last_name_error: Locator = self.page.get_by_text(
+            "Error: Last Name is required",
+        )
 
     def input_first_name(self: "CheckoutPage", name: str) -> None:
         """Input text into the first name input field."""
