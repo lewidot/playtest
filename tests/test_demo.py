@@ -2,8 +2,8 @@
 
 import pytest
 from playwright.sync_api import expect
-from pages.cart_page import CartPage
 
+from pages.cart_page import CartPage
 from pages.login_page import LoginPage
 from pages.products_page import ProductsPage
 from utils.load_data import load_data
@@ -129,8 +129,11 @@ def test_product_img_src(
     )
 
 
+@pytest.mark.usefixtures("_reset_app_state")
 def test_add_to_cart(
-    login_page: LoginPage, products_page: ProductsPage, cart_page: CartPage
+    login_page: LoginPage,
+    products_page: ProductsPage,
+    cart_page: CartPage,
 ) -> None:
     """Test that add to cart button successfully adds the item to the cart."""
     # Go to the login page
