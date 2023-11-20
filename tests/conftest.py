@@ -9,6 +9,7 @@ from playwright.sync_api import Page
 
 from pages.base_page import BasePage
 from pages.cart_page import CartPage
+from pages.checkout_page import CheckoutPage
 from pages.login_page import LoginPage
 from pages.products_page import ProductsPage
 
@@ -73,3 +74,9 @@ def products_page(page: Page) -> ProductsPage:
 def cart_page(page: Page) -> CartPage:
     """Initialise a CartPage instance."""
     return CartPage(page=page)
+
+
+@pytest.fixture()
+def checkout_page(page: Page) -> CheckoutPage:
+    """Initialise a CheckoutPage instance."""
+    return CheckoutPage(page=page)
