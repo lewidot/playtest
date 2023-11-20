@@ -3,6 +3,7 @@
 import pytest
 from playwright.sync_api import expect
 
+from flows.flows import Flows
 from pages.cart_page import CartPage
 from pages.checkout_page import CheckoutPage
 from pages.login_page import LoginPage
@@ -131,23 +132,10 @@ def test_product_img_src(
 
 
 @pytest.mark.usefixtures("_reset_app_state")
-def test_add_to_cart(
-    login_page: LoginPage,
-    products_page: ProductsPage,
-    cart_page: CartPage,
-) -> None:
+def test_add_to_cart(flows: Flows, cart_page: CartPage) -> None:
     """Test that add to cart button successfully adds the item to the cart."""
-    # Go to the login page
-    login_page.load()
-
-    # Complete the login page
-    login_page.login()
-
-    # Add a product to the cart
-    products_page.add_product_to_cart(name="Sauce Labs Backpack")
-
-    # Go to the shopping cart
-    products_page.click_shopping_cart()
+    # Login and add an item to the cart
+    flows.add_and_goto_cart()
 
     # Assert that the item is present in the cart
     expect(cart_page.cart_item_by_name("Sauce Labs Backpack")).to_be_visible()
@@ -155,23 +143,13 @@ def test_add_to_cart(
 
 @pytest.mark.usefixtures("_reset_app_state")
 def test_checkout_first_name_mandatory(
-    login_page: LoginPage,
-    products_page: ProductsPage,
+    flows: Flows,
     cart_page: CartPage,
     checkout_page: CheckoutPage,
 ) -> None:
     """Test that adds an item to cart and verifies that first name is mandatory at checkout."""
-    # Go to the login page
-    login_page.load()
-
-    # Complete the login page
-    login_page.login()
-
-    # Add a product to the cart
-    products_page.add_product_to_cart(name="Sauce Labs Backpack")
-
-    # Go to the shopping cart
-    products_page.click_shopping_cart()
+    # Login and add an item to the cart
+    flows.add_and_goto_cart()
 
     # Click the checkout button
     cart_page.click_checkout_button()
@@ -189,23 +167,13 @@ def test_checkout_first_name_mandatory(
 
 @pytest.mark.usefixtures("_reset_app_state")
 def test_checkout_last_name_mandatory(
-    login_page: LoginPage,
-    products_page: ProductsPage,
+    flows: Flows,
     cart_page: CartPage,
     checkout_page: CheckoutPage,
 ) -> None:
     """Test that adds an item to cart and verifies that last name is mandatory at checkout."""
-    # Go to the login page
-    login_page.load()
-
-    # Complete the login page
-    login_page.login()
-
-    # Add a product to the cart
-    products_page.add_product_to_cart(name="Sauce Labs Backpack")
-
-    # Go to the shopping cart
-    products_page.click_shopping_cart()
+    # Login and add an item to the cart
+    flows.add_and_goto_cart()
 
     # Click the checkout button
     cart_page.click_checkout_button()
@@ -223,23 +191,13 @@ def test_checkout_last_name_mandatory(
 
 @pytest.mark.usefixtures("_reset_app_state")
 def test_checkout_zip_postal_code_mandatory(
-    login_page: LoginPage,
-    products_page: ProductsPage,
+    flows: Flows,
     cart_page: CartPage,
     checkout_page: CheckoutPage,
 ) -> None:
     """Test that adds an item to cart and verifies that zip/postal code is mandatory at checkout."""
-    # Go to the login page
-    login_page.load()
-
-    # Complete the login page
-    login_page.login()
-
-    # Add a product to the cart
-    products_page.add_product_to_cart(name="Sauce Labs Backpack")
-
-    # Go to the shopping cart
-    products_page.click_shopping_cart()
+    # Login and add an item to the cart
+    flows.add_and_goto_cart()
 
     # Click the checkout button
     cart_page.click_checkout_button()
