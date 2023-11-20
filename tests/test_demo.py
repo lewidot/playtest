@@ -185,7 +185,7 @@ def test_checkout_last_name_mandatory(
     # Click the Continue button
     checkout_page.click_continue_button()
 
-    # Assert that an error is displayed as the First Name is a mandatory field
+    # Assert that an error is displayed as the Last Name is a mandatory field
     expect(checkout_page.last_name_error).to_be_visible()
 
 
@@ -209,5 +209,5 @@ def test_checkout_zip_postal_code_mandatory(
     # Click the Continue button
     checkout_page.click_continue_button()
 
-    # Assert that an error is displayed as the First Name is a mandatory field
+    # Assert that an error is displayed as the Zip/Postal Code is a mandatory field
     expect(checkout_page.zip_postal_code_error).to_be_visible()
