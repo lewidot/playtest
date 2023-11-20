@@ -7,6 +7,7 @@ import pytest
 from dotenv import load_dotenv
 from playwright.sync_api import Page
 
+from flows.flows import Flows
 from pages.base_page import BasePage
 from pages.cart_page import CartPage
 from pages.checkout_page import CheckoutPage
@@ -80,3 +81,9 @@ def cart_page(page: Page) -> CartPage:
 def checkout_page(page: Page) -> CheckoutPage:
     """Initialise a CheckoutPage instance."""
     return CheckoutPage(page=page)
+
+
+@pytest.fixture()
+def flows(login_page: LoginPage, products_page: ProductsPage) -> Flows:
+    """Initialise a Flows instance."""
+    return Flows(login_page, products_page)
