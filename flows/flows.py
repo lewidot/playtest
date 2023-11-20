@@ -20,8 +20,7 @@ class Flows:
     ) -> None:
         """Login, add a product to the cart and navigate to the cart page."""
         # Login to the website
-        self.login_page.load()
-        self.login_page.login()
+        self.login_page.navigate_and_login()
 
         # Locate and add an item to the cart
         self.products_page.add_product_to_cart(name=product_name)

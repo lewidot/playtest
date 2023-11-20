@@ -22,11 +22,8 @@ def test_title(login_page: LoginPage) -> None:
 
 def test_login(login_page: LoginPage, products_page: ProductsPage) -> None:
     """Test the login page."""
-    # Go to the login page
-    login_page.load()
-
     # Complete the login page
-    login_page.login()
+    login_page.navigate_and_login()
 
     # Assert that the login is successful
     expect(products_page.page).to_have_url(products_page.url)
@@ -49,11 +46,8 @@ def test_product_is_visible(
     name: str,
 ) -> None:
     """Test the expected product is visible on the products page."""
-    # Go to the login page
-    login_page.load()
-
     # Complete the login page
-    login_page.login()
+    login_page.navigate_and_login()
 
     # Assert that the product is visible
     expect(products_page.product_by_name(name=name)).to_be_visible()
@@ -70,11 +64,8 @@ def test_product_price(
     price: str,
 ) -> None:
     """Test the price is correct for each product on the products page."""
-    # Go to the login page
-    login_page.load()
-
     # Complete the login page
-    login_page.login()
+    login_page.navigate_and_login()
 
     # Locate the product by the product name
     product = products_page.product_by_name(name=name)
@@ -94,11 +85,8 @@ def test_product_description(
     description: str,
 ) -> None:
     """Test the description text is correct for each product on the products page."""
-    # Go to the login page
-    login_page.load()
-
     # Complete the login page
-    login_page.login()
+    login_page.navigate_and_login()
 
     # Locate the product by the product name
     product = products_page.product_by_name(name=name)
@@ -115,11 +103,8 @@ def test_product_img_src(
     src: str,
 ) -> None:
     """Test the product image src is correct for each product on the products page."""
-    # Go to the login page
-    login_page.load()
-
     # Complete the login page
-    login_page.login()
+    login_page.navigate_and_login()
 
     # Locate the product by the product name
     product = products_page.product_by_name(name=name)
@@ -135,7 +120,7 @@ def test_product_img_src(
 def test_add_to_cart(flows: Flows, cart_page: CartPage) -> None:
     """Test that add to cart button successfully adds the item to the cart."""
     # Login and add an item to the cart
-    flows.add_and_goto_cart()
+    flows.add_product_to_cart()
 
     # Assert that the item is present in the cart
     expect(cart_page.cart_item_by_name("Sauce Labs Backpack")).to_be_visible()
@@ -149,7 +134,7 @@ def test_checkout_first_name_mandatory(
 ) -> None:
     """Test that adds an item to cart and verifies that first name is mandatory at checkout."""
     # Login and add an item to the cart
-    flows.add_and_goto_cart()
+    flows.add_product_to_cart()
 
     # Click the checkout button
     cart_page.click_checkout_button()
@@ -173,7 +158,7 @@ def test_checkout_last_name_mandatory(
 ) -> None:
     """Test that adds an item to cart and verifies that last name is mandatory at checkout."""
     # Login and add an item to the cart
-    flows.add_and_goto_cart()
+    flows.add_product_to_cart()
 
     # Click the checkout button
     cart_page.click_checkout_button()
@@ -197,7 +182,7 @@ def test_checkout_zip_postal_code_mandatory(
 ) -> None:
     """Test that adds an item to cart and verifies that zip/postal code is mandatory at checkout."""
     # Login and add an item to the cart
-    flows.add_and_goto_cart()
+    flows.add_product_to_cart()
 
     # Click the checkout button
     cart_page.click_checkout_button()
