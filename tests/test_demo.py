@@ -124,7 +124,7 @@ def test_product_img_src(
     # Locate the product by the product name
     product = products_page.product_by_name(name=name)
 
-    # Assert that the product description is correct
+    # Assert that the product image source is correct
     expect(product.locator(products_page.product_image)).to_have_attribute(
         name="src",
         value=src,
