@@ -1,5 +1,9 @@
 <script lang="ts">
 	import { source } from 'sveltekit-sse';
+	import { Button } from '$lib/components/ui/button/index.js';
+	import { Input } from '$lib/components/ui/input';
+	import { Label } from '$lib/components/ui/label';
+
 	let messages = $state(['']);
 	let grep = $state('');
 
@@ -39,10 +43,16 @@
 	}
 </script>
 
-<h1>Playtest</h1>
+<h1 class="text-4xl font-semibold">Playtest</h1>
 
-<label for="grep">Filter<input bind:value={grep} id="grep" name="grep" type="text" /></label>
-<button id="runBtn" onclick={openStream}>Run</button>
+<div class="w-2/3 space-y-6">
+	<div class="flex w-full max-w-sm flex-col gap-1.5">
+		<Label for="grep">Filter</Label>
+		<Input type="text" id="grep" name="grep" bind:value={grep} />
+	</div>
+
+	<Button id="runBtn" onclick={openStream}>Run</Button>
+</div>
 
 <!-- Display messages -->
 <div class="message-container">
