@@ -43,8 +43,6 @@
 	}
 </script>
 
-<h1 class="text-4xl font-semibold">Playtest</h1>
-
 <div class="w-2/3 space-y-6">
 	<div class="flex w-full max-w-sm flex-col gap-1.5">
 		<Label for="grep">Filter</Label>
@@ -55,22 +53,8 @@
 </div>
 
 <!-- Display messages -->
-<div class="message-container">
+<div class="my-4 min-h-16 overflow-auto rounded-sm border border-slate-900 p-4">
 	{#each messages as message}
 		<pre>{message}</pre>
 	{/each}
 </div>
-
-<style>
-	.message-container {
-		border-width: 1px;
-		border-color: black;
-		border-style: solid;
-		border-radius: 6px;
-		min-height: 60px;
-		padding: 1em;
-		margin-top: 2em;
-		min-width: 50%;
-		max-width: 75%;
-	}
-</style>
