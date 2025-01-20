@@ -3,14 +3,17 @@
 	import { Button } from '$lib/components/ui/button/index.js';
 	import { Input } from '$lib/components/ui/input';
 	import { Label } from '$lib/components/ui/label';
+	import LoaderCircle from 'lucide-svelte/icons/loader-circle';
+	import { toast } from 'svelte-sonner';
 
 	let messages = $state(['']);
 	let grep = $state('');
+	let disabled = $state(false);
 
 	function openStream() {
 		messages = [''];
-		let btn = document.getElementById('runBtn') as HTMLButtonElement;
-		btn.disabled = true;
+		disabled = true;
+
 		// POST to "/run" and listen for "message" events
 		const connection = source('/run', {
 			cache: false,
@@ -33,7 +36,12 @@
 			// Close the connection when the "end" message has been received.
 			if (message === 'end') {
 				connection.close();
-				btn.disabled = false;
+
+				// Enable the Run button
+				disabled = false;
+
+				// Show toast
+				toast.success('Test run complete');
 				return;
 			}
 
@@ -49,12 +57,19 @@
 		<Input type="text" id="grep" name="grep" bind:value={grep} />
 	</div>
 
-	<Button id="runBtn" onclick={openStream}>Run</Button>
+	<Button {disabled} id="runBtn" onclick={openStream}
+		>{#if disabled}
+			<LoaderCircle class="animate-spin" />
+			Running
+		{:else}
+			Run
+		{/if}</Button
+	>
 </div>
 
 <!-- Display messages -->
 <div class="my-4 min-h-16 overflow-auto rounded-sm border border-slate-900 p-4">
 	{#each messages as message}
-		<pre>{message}</pre>
+		<pre class="p-1">{message}</pre>
 	{/each}
 </div>

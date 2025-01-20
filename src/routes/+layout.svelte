@@ -1,8 +1,10 @@
 <script lang="ts">
+	import { Toaster } from '$lib/components/ui/sonner/index.js';
 	import '../app.css';
 	let { children } = $props();
 </script>
 
+<Toaster richColors />
 <header class="mx-auto flex max-w-screen-md items-center justify-center px-12 py-4">
 	<a href="/">
 		<div class="flex items-center gap-2">
