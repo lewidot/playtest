@@ -2,10 +2,11 @@ import { produce } from 'sveltekit-sse';
 import { spawn } from 'child_process';
 import stripAnsi from 'strip-ansi';
 import type { RequestHandler } from './$types';
+import type { RunOptions } from '$lib/types';
 
 export const POST: RequestHandler = async ({ request }) => {
 	// Handle the POST request here
-	const jsonData: { grep: string } = await request.json();
+	const body = (await request.json()) as RunOptions;
 
 	// Return the produce function from 'sveltekit-sse' that handles streaming the response.
 	return produce(async function start({ emit }) {
@@ -13,8 +14,8 @@ export const POST: RequestHandler = async ({ request }) => {
 		const args = ['exec', 'playwright', 'test'];
 
 		// If a grep value is specified, add to playwright cli args.
-		if (jsonData.grep !== '') {
-			args.push('-g', jsonData.grep);
+		if (body.grep !== '') {
+			args.push('-g', body.grep);
 		}
 		// Spawn the process that runs the playwright tests.
 		const child = spawn('pnpm', args, {

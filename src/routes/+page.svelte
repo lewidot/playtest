@@ -5,6 +5,7 @@
 	import { Label } from '$lib/components/ui/label';
 	import LoaderCircle from 'lucide-svelte/icons/loader-circle';
 	import { toast } from 'svelte-sonner';
+	import { type RunOptions } from '$lib/types';
 
 	let messages = $state(['']);
 	let grep = $state('');
@@ -13,6 +14,7 @@
 	function openStream() {
 		messages = [''];
 		disabled = true;
+		const runBody: RunOptions = { grep: grep };
 
 		// POST to "/run" and listen for "message" events
 		const connection = source('/run', {
@@ -25,7 +27,7 @@
 			},
 			options: {
 				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify({ grep: grep })
+				body: JSON.stringify(runBody)
 			}
 		});
 
