@@ -8,8 +8,8 @@
 <header class="mx-auto flex max-w-screen-md items-center justify-center px-12 py-4">
 	<a href="/">
 		<div class="flex items-center gap-2">
-			<img src="https://deno.news/favicon.ico" class="size-8" alt="logo" />
-			<h1 class="text-2xl font-bold">Playtest</h1>
+			<img src="/theater.png" class="size-8" alt="logo" />
+			<h1 class="text-3xl font-bold">Playtest</h1>
 		</div></a
 	>
 </header>
