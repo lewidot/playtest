@@ -72,6 +72,6 @@
 <!-- Display messages -->
 <div class="my-4 min-h-16 overflow-auto rounded-sm border border-slate-900 p-4">
 	{#each messages as message}
-		<pre class="p-1">{message}</pre>
+		<pre class="p-1 font-mono text-xs">{message}</pre>
 	{/each}
 </div>
