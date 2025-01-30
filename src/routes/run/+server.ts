@@ -3,6 +3,7 @@ import { spawn } from 'child_process';
 import stripAnsi from 'strip-ansi';
 import type { RequestHandler } from './$types';
 import type { RunOptions } from '$lib/types';
+import log from '$lib/logger';
 
 export const POST: RequestHandler = async ({ request }) => {
 	// Handle the POST request here
@@ -21,6 +22,8 @@ export const POST: RequestHandler = async ({ request }) => {
 		const child = spawn('pnpm', args, {
 			cwd: './tmp'
 		});
+
+		log.info({ pid: child.pid, args: child.spawnargs }, 'child process spawned');
 
 		// As each data event is emitted, clean up the data and then stream a message.
 		child.stdout.on('data', (data) => {
@@ -43,7 +46,7 @@ export const POST: RequestHandler = async ({ request }) => {
 
 		// When the process closes, handle any cleanup and send a final message to the client to signal it has completed.
 		child.on('close', (code) => {
-			console.log(`child process exited with code ${code}`);
+			log.info({ pid: child.pid }, `child process exited with code ${code}`);
 			const { error } = emit('message', 'end');
 			if (error) {
 				console.log('error whilst streaming');
