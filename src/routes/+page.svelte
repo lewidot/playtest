@@ -53,25 +53,31 @@
 	}
 </script>
 
-<div class="w-2/3 space-y-6">
-	<div class="flex w-full max-w-sm flex-col gap-1.5">
-		<Label for="grep">Filter</Label>
-		<Input type="text" id="grep" name="grep" bind:value={grep} />
+<div class="grid h-full items-stretch gap-6 md:grid-cols-[1fr_200px]">
+	<div class="my-4 hidden flex-col space-y-4 sm:flex md:order-2">
+		<div class="mb-4 grid gap-2">
+			<Label for="grep">Filter</Label>
+			<Input type="text" id="grep" name="grep" bind:value={grep} />
+		</div>
+		<Button {disabled} id="runBtn" onclick={openStream}
+			>{#if disabled}
+				<LoaderCircle class="animate-spin" />
+				Running
+			{:else}
+				Run
+			{/if}</Button
+		>
 	</div>
-
-	<Button {disabled} id="runBtn" onclick={openStream}
-		>{#if disabled}
-			<LoaderCircle class="animate-spin" />
-			Running
-		{:else}
-			Run
-		{/if}</Button
-	>
-</div>
-
-<!-- Display messages -->
-<div class="my-4 min-h-16 overflow-auto rounded-sm border border-slate-900 p-4">
-	{#each messages as message}
-		<pre class="p-1 font-mono text-xs">{message}</pre>
-	{/each}
+	<div class="md:order-1">
+		<div class="flex h-full flex-col space-y-4">
+			<!-- Display messages -->
+			<div
+				class="my-4 max-h-[700px] min-h-[400px] w-full flex-1 overflow-auto rounded-md border p-4 shadow-sm md:text-sm"
+			>
+				{#each messages as message}
+					<pre class="font-mono text-sm">{message}</pre>
+				{/each}
+			</div>
+		</div>
+	</div>
 </div>
