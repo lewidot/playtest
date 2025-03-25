@@ -5,50 +5,55 @@
 	import { Label } from '$lib/components/ui/label';
 	import LoaderCircle from 'lucide-svelte/icons/loader-circle';
 	import { toast } from 'svelte-sonner';
-	import { type RunOptions } from '$lib/types';
 
+	// Set reactive state
 	let messages = $state(['']);
 	let grep = $state('');
 	let disabled = $state(false);
+	let msg = $state('not running');
 
-	function openStream() {
-		messages = [''];
-		disabled = true;
-		const runBody: RunOptions = { grep: grep };
+	// Connect to /status stream to listen for changes to the state of the playwright run.
+	// '0' for when playwright is not running
+	// '1' for when a playwright test run is active
+	const stream = source('/status').select('message');
+	// Subscribe to messages
+	stream.subscribe((message: string) => {
+		// Close the connection when the "end" message has been received.
+		if (message === '0') {
+			msg = 'not running';
+			disabled = false;
+		} else if (message === '1') {
+			msg = 'playwright is running';
+			messages = [''];
+			toast.info('Test run started', {});
+			disabled = true;
+		}
+	});
 
-		// POST to "/run" and listen for "message" events
-		const connection = source('/run', {
-			cache: false,
-			open() {
-				console.log('opening connection to /run');
-			},
-			close() {
-				console.log('closing connection to /run');
-			},
-			options: {
-				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify(runBody)
-			}
-		});
+	// Connect to /run stream to listen for the output of the playwright run.
+	// 'end' for when the playwright run is complete
+	const runStream = source('/run', { cache: false }).select('message');
+	// Subscribe to messages
+	runStream.subscribe((message: string) => {
+		// Close the connection when the "end" message has been received.
+		if (message === 'end') {
+			// Enable the Run button
+			disabled = false;
 
-		const stream = connection.select('message');
+			// Show toast
+			toast.success('Test run complete');
+			return;
+		}
 
-		// Subscribe to messages
-		stream.subscribe((message: string) => {
-			// Close the connection when the "end" message has been received.
-			if (message === 'end') {
-				connection.close();
+		// Update the array of messages.
+		messages.push(message);
+	});
 
-				// Enable the Run button
-				disabled = false;
-
-				// Show toast
-				toast.success('Test run complete');
-				return;
-			}
-
-			// Update the array of messages.
-			messages.push(message);
+	// Function to post data to the /start endpoint and start the playwright run.
+	async function start() {
+		await fetch('/start', {
+			method: 'POST',
+			body: JSON.stringify({ grep: grep })
 		});
 	}
 </script>
@@ -59,7 +64,7 @@
 			<Label for="grep">Filter</Label>
 			<Input type="text" id="grep" name="grep" bind:value={grep} />
 		</div>
-		<Button {disabled} id="runBtn" onclick={openStream}
+		<Button {disabled} id="runBtn" onclick={start}
 			>{#if disabled}
 				<LoaderCircle class="animate-spin" />
 				Running
@@ -67,6 +72,7 @@
 				Run
 			{/if}</Button
 		>
+		<span class="text-blue-600">{msg}</span>
 	</div>
 	<div class="md:order-1">
 		<div class="flex h-full flex-col space-y-4">

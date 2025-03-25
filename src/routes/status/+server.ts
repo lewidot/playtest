@@ -1,9 +1,7 @@
 import { produce } from 'sveltekit-sse';
-import type { RequestHandler } from './$types';
-import { playwrightEmitter } from '$lib';
+import { storeEmitter } from '$lib';
 
-export const POST: RequestHandler = async () => {
-	// Return the produce function from 'sveltekit-sse' that handles streaming the response.
+export function POST() {
 	return produce(async function start({ emit }) {
 		// Create a function so we can remove it when the client disconnects
 		const send = (msg: string) => {
@@ -16,11 +14,11 @@ export const POST: RequestHandler = async () => {
 
 		const cancel = () => {
 			// Avoid memory leaks by removing the listener when the client is gone
-			playwrightEmitter.removeListener('stdout', send);
+			storeEmitter.removeListener('running', send);
 		};
 
-		playwrightEmitter.on('stdout', send);
+		storeEmitter.on('running', send);
 		// Return a reference to the cancel function so clean up can happen when the library detects that the client has disconnected
 		return cancel;
 	});
-};
+}
