@@ -5,30 +5,11 @@
 	import { Label } from '$lib/components/ui/label';
 	import LoaderCircle from 'lucide-svelte/icons/loader-circle';
 	import { toast } from 'svelte-sonner';
+	import { runState, runOutput } from '$lib/state.svelte';
 
 	// Set reactive state
-	let messages = $state(['']);
 	let grep = $state('');
-	let disabled = $state(false);
-	let msg = $state('not running');
-
-	// Connect to /status stream to listen for changes to the state of the playwright run.
-	// '0' for when playwright is not running
-	// '1' for when a playwright test run is active
-	const stream = source('/status').select('message');
-	// Subscribe to messages
-	stream.subscribe((message: string) => {
-		// Close the connection when the "end" message has been received.
-		if (message === '0') {
-			msg = 'not running';
-			disabled = false;
-		} else if (message === '1') {
-			msg = 'playwright is running';
-			messages = [''];
-			toast.info('Test run started', {});
-			disabled = true;
-		}
-	});
+	let disabled = $derived(runState.value);
 
 	// Connect to /run stream to listen for the output of the playwright run.
 	// 'end' for when the playwright run is complete
@@ -37,16 +18,13 @@
 	runStream.subscribe((message: string) => {
 		// Close the connection when the "end" message has been received.
 		if (message === 'end') {
-			// Enable the Run button
-			disabled = false;
-
 			// Show toast
 			toast.success('Test run complete');
 			return;
 		}
 
 		// Update the array of messages.
-		messages.push(message);
+		runOutput.values.push(message);
 	});
 
 	// Function to post data to the /start endpoint and start the playwright run.
@@ -72,7 +50,6 @@
 				Run
 			{/if}</Button
 		>
-		<span class="text-blue-600">{msg}</span>
 	</div>
 	<div class="md:order-1">
 		<div class="flex h-full flex-col space-y-4">
@@ -80,7 +57,7 @@
 			<div
 				class="my-4 max-h-[700px] min-h-[400px] w-full flex-1 overflow-auto rounded-md border p-4 shadow-sm md:text-sm"
 			>
-				{#each messages as message}
+				{#each runOutput.values as message}
 					<pre class="font-mono text-sm">{message}</pre>
 				{/each}
 			</div>
