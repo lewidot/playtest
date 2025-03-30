@@ -6,6 +6,11 @@
 	import LoaderCircle from 'lucide-svelte/icons/loader-circle';
 	import { toast } from 'svelte-sonner';
 	import { runState, runOutput } from '$lib/state.svelte';
+	import type { PageProps } from './$types';
+	import GitInfo from '$lib/components/git-info.svelte';
+
+	// Server loaded page data
+	let { data }: PageProps = $props();
 
 	// Set reactive state
 	let grep = $state('');
@@ -36,7 +41,8 @@
 	}
 </script>
 
-<div class="grid h-full items-stretch gap-6 md:grid-cols-[1fr_200px]">
+<GitInfo commit={data.commit} message={data.message} />
+<div class="grid h-full items-stretch gap-6 md:grid-cols-[1fr_300px]">
 	<div class="my-4 hidden flex-col space-y-4 sm:flex md:order-2">
 		<div class="mb-4 grid gap-2">
 			<Label for="grep">Filter</Label>
@@ -53,7 +59,6 @@
 	</div>
 	<div class="md:order-1">
 		<div class="flex h-full flex-col space-y-4">
-			<!-- Display messages -->
 			<div
 				class="my-4 max-h-[700px] min-h-[400px] w-full flex-1 overflow-auto rounded-md border p-4 shadow-sm md:text-sm"
 			>
