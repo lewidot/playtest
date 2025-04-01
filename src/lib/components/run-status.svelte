@@ -14,7 +14,7 @@
 	// Connect to /status stream to listen for changes to the state of the playwright run.
 	// '0' for when playwright is not running
 	// '1' for when a playwright test run is active
-	const stream = source('/status').select('message');
+	const stream = source('/api/status').select('message');
 	// Subscribe to messages
 	stream.subscribe((message: string) => {
 		// Update the global run state.

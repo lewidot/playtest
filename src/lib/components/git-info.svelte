@@ -9,7 +9,7 @@
 	// Function to fetch the latest commit for the tmp/ repository.
 	async function fetchLatestCommit() {
 		disabled = true;
-		const res = await fetch('/commit', {
+		const res = await fetch('/api/commit', {
 			method: 'GET'
 		});
 

@@ -18,7 +18,7 @@
 
 	// Connect to /run stream to listen for the output of the playwright run.
 	// 'end' for when the playwright run is complete
-	const runStream = source('/run', { cache: false }).select('message');
+	const runStream = source('/api/run', { cache: false }).select('message');
 	// Subscribe to messages
 	runStream.subscribe((message: string) => {
 		// Close the connection when the "end" message has been received.
@@ -34,7 +34,7 @@
 
 	// Function to post data to the /start endpoint and start the playwright run.
 	async function start() {
-		await fetch('/start', {
+		await fetch('/api/start', {
 			method: 'POST',
 			body: JSON.stringify({ grep: grep })
 		});
