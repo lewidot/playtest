@@ -1,10 +1,8 @@
 <script lang="ts">
-	import { source } from 'sveltekit-sse';
 	import { Button } from '$lib/components/ui/button/index.js';
 	import { Input } from '$lib/components/ui/input';
 	import { Label } from '$lib/components/ui/label';
 	import LoaderCircle from 'lucide-svelte/icons/loader-circle';
-	import { toast } from 'svelte-sonner';
 	import { runState, runOutput } from '$lib/state.svelte';
 	import type { PageProps } from './$types';
 	import GitInfo from '$lib/components/git-info.svelte';
@@ -15,22 +13,6 @@
 	// Set reactive state
 	let grep = $state('');
 	let disabled = $derived(runState.value);
-
-	// Connect to /run stream to listen for the output of the playwright run.
-	// 'end' for when the playwright run is complete
-	const runStream = source('/api/run', { cache: false }).select('message');
-	// Subscribe to messages
-	runStream.subscribe((message: string) => {
-		// Close the connection when the "end" message has been received.
-		if (message === 'end') {
-			// Show toast
-			toast.success('Test run complete');
-			return;
-		}
-
-		// Update the array of messages.
-		runOutput.values.push(message);
-	});
 
 	// Function to post data to the /start endpoint and start the playwright run.
 	async function start() {
