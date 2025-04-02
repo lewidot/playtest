@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { toast } from 'svelte-sonner';
 	import { statusSource } from '$lib/sources';
 	import { runOutput, runState } from '$lib/state.svelte';
 
@@ -21,7 +20,6 @@
 		if (message === '1') {
 			runState.value = true;
 			runOutput.values = [''];
-			toast.info('Test run started', {});
 		} else {
 			runState.value = false;
 		}
@@ -29,7 +27,7 @@
 </script>
 
 <span
-	class=" inline-flex items-center justify-center rounded-full {runState.value
+	class="inline-flex items-center justify-center rounded-full {runState.value
 		? 'bg-emerald-100 text-emerald-700'
 		: 'bg-red-100 text-red-700'} px-2.5 py-0.5"
 >

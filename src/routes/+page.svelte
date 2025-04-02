@@ -6,6 +6,7 @@
 	import { runState, runOutput } from '$lib/state.svelte';
 	import type { PageProps } from './$types';
 	import GitInfo from '$lib/components/git-info.svelte';
+	import { toast } from 'svelte-sonner';
 
 	// Server loaded page data
 	let { data }: PageProps = $props();
@@ -20,6 +21,7 @@
 			method: 'POST',
 			body: JSON.stringify({ grep: grep })
 		});
+		toast.info('Test run started', {});
 	}
 </script>
 
