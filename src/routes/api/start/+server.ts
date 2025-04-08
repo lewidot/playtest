@@ -40,6 +40,19 @@ export const POST: RequestHandler = async ({ request }) => {
 		playwrightEmitter.emit('stdout', stripped);
 	});
 
+	child.stderr.on('data', (data) => {
+		const stringData = data.toString();
+		const stripped = stripAnsi(stringData);
+		playwrightEmitter.emit('stdout', stripped);
+	});
+
+	child.on('error', (error) => {
+		log.info({ pid: child.pid, error: error.message }, `child process error`);
+		const stripped = stripAnsi(error.message);
+		playwrightEmitter.emit('stdout', stripped);
+		playwrightEmitter.emit('stdout', 'error');
+	});
+
 	// When the process closes, handle any cleanup and emit a final message to the client to signal it has completed.
 	child.on('close', (code) => {
 		log.info({ pid: child.pid }, `child process exited with code ${code}`);

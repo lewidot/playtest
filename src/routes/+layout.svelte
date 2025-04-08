@@ -18,6 +18,10 @@
 			// Show toast
 			toast.success('Test run complete');
 			return;
+		} else if (message === 'error') {
+			// Show toast
+			toast.error('Error running tests');
+			return;
 		}
 
 		// Update the array of messages.
