@@ -25,30 +25,33 @@
 	}
 </script>
 
-<GitInfo commit={data.commit} message={data.message} />
-<div class="grid h-full items-stretch gap-6 md:grid-cols-[1fr_300px]">
-	<div class="my-4 hidden flex-col space-y-4 sm:flex md:order-2">
-		<div class="mb-4 grid gap-2">
-			<Label for="grep">Filter</Label>
-			<Input type="text" id="grep" name="grep" bind:value={grep} />
-		</div>
-		<Button {disabled} id="runBtn" onclick={start}
-			>{#if disabled}
-				<LoaderCircle class="animate-spin" />
-				Running
-			{:else}
-				Run
-			{/if}</Button
-		>
+<div class="flex-1 space-y-4 p-8 pt-6">
+	<div class="flex items-center justify-between space-y-2">
+		<h2 class="text-3xl font-bold tracking-tight">Test runner</h2>
+		<GitInfo commit={data.commit} message={data.message} />
 	</div>
-	<div class="md:order-1">
-		<div class="flex h-full flex-col space-y-4">
-			<div
-				class="my-4 max-h-[700px] min-h-[400px] w-full flex-1 overflow-auto rounded-md border p-4 shadow-sm md:text-sm"
-			>
+	<div class="space-y-4">
+		<div class="grid gap-4 md:grid-cols-2 lg:grid-cols-8">
+			<div class="col-span-6 h-[600px] overflow-auto rounded-md border p-4">
 				{#each runOutput.values as message}
 					<pre class="font-mono text-sm">{message}</pre>
 				{/each}
+			</div>
+			<div class="col-span-2 h-full rounded-md border p-4">
+				<div class="my-4 flex-col space-y-4 sm:flex md:order-2">
+					<div class="mb-4 grid gap-2">
+						<Label for="grep">Filter</Label>
+						<Input type="text" id="grep" name="grep" bind:value={grep} />
+					</div>
+					<Button {disabled} id="runBtn" onclick={start}
+						>{#if disabled}
+							<LoaderCircle class="animate-spin" />
+							Running
+						{:else}
+							Run
+						{/if}</Button
+					>
+				</div>
 			</div>
 		</div>
 	</div>
